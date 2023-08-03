@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 const initialCars = [
   { row: 1, column: 1, color: "bg-red-300" },
+  { row: 2, column: 2, color: "bg-orange-500" },
+  { row: 3, column: 3, color: "bg-purple-500" },
   { row: 4, column: 4, color: "bg-blue-300" },
   { row: 7, column: 7, color: "bg-green-300" },
 ];
