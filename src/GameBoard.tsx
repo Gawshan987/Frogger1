@@ -1,23 +1,47 @@
 import React, { useEffect, useState } from "react";
 
+//each cars row, coluumn, colour and direction
 const initialCars = [
-  { row: 1, column: 1, color: "bg-red-300" },
-  { row: 2, column: 2, color: "bg-orange-500" },
-  { row: 3, column: 3, color: "bg-purple-500" },
-  { row: 4, column: 4, color: "bg-blue-300" },
-  { row: 7, column: 7, color: "bg-green-300" },
+  { row: 1, column: 1, color: "bg-red-300", direction: "right" },
+  { row: 2, column: 2, color: "bg-orange-500", direction: "left" },
+  { row: 3, column: 3, color: "bg-purple-500", direction: "right" },
+  { row: 4, column: 4, color: "bg-blue-300", direction: "left" },
+  { row: 5, column: 5, color: "bg-black", direction: "right" },
+  { row: 6, column: 6, color: "bg-yellow-500", direction: "right" },
+  { row: 7, column: 7, color: "bg-green-300", direction: "left" },
 ];
 
+//the function is
+//initalize "cars" with initialcars
+//initalize "setCars" function
 const GameBoard = () => {
+  //cars is a state variable that hold the Current value of cars that
+  //will change over time based on the users interactions
+  //setCars is the updater function allows you to update the value of "cars"
+  //and initialCars is an array of objects that are the cars, and it
+  //allows you to update the value of the "cars" state variable
   const [cars, setCars] = useState(initialCars);
 
   useEffect(() => {
     const moveCars = () => {
       setCars((prevCars) =>
-        prevCars.map((car) => ({
-          ...car,
-          column: car.column > 0 ? car.column - 1 : 8, // If car is at the leftmost position, move it to the rightmost position
-        }))
+        prevCars.map((car) => {
+          const newRow = car.row;
+          let newColumn = car.column;
+          //if direction of car is left
+          if (car.direction === "left") {
+            //if car column is greater than 0 then -1 else set car column to 8
+            newColumn = newColumn > 0 ? newColumn - 1 : 8;
+          } else {
+            //else increment car column by 1 and loop within grid boundaries (0 to 8)
+            newColumn = (newColumn + 1) % 9;
+          }
+
+          return {
+            ...car,
+            column: newColumn,
+          };
+        })
       );
     };
 
