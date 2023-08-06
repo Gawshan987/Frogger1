@@ -41,7 +41,37 @@ const PlayerControls = () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   });
-  return <div></div>;
+
+  return (
+    <div className="grid grid-cols-9 max-w-[55rem]">
+      {[...Array(9)].map((_, rowIndex) =>
+        [...Array(9)].map((_, columnIndex) => (
+          <div
+            className={`w-24 h-24 border border-gray-500 ${
+              frogPosition.row === rowIndex &&
+              frogPosition.column === columnIndex
+                ? "bg-green-500"
+                : "bg-gray-300"
+            }`}
+            key={`${rowIndex}-${columnIndex}`}
+          >
+            {frogPosition.row === rowIndex &&
+              frogPosition.column === columnIndex && (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span
+                    role="img"
+                    aria-label="Frog"
+                    style={{ fontSize: "1px" }}
+                  >
+                    🐸
+                  </span>
+                </div>
+              )}
+          </div>
+        ))
+      )}
+    </div>
+  );
 };
 
 export default PlayerControls;

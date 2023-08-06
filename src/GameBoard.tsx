@@ -21,6 +21,7 @@ const GameBoard = () => {
   //and initialCars is an array of objects that are the cars, and it
   //allows you to update the value of the "cars" state variable
   const [cars, setCars] = useState(initialCars);
+  const [frogPosition, setFrogPosition] = useState({ row: 1, column: 1 });
 
   useEffect(() => {
     const moveCars = () => {
@@ -50,6 +51,31 @@ const GameBoard = () => {
     // Clean up the interval on unmount
     return () => clearInterval(intervalId);
   }, []);
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    const { key } = event;
+    let newRow = frogPosition.row;
+    let newColumn = frogPosition.column;
+
+    if (key === "ArrowLeft") {
+      newColumn = newColumn > 0 ? newColumn - 1 : 0;
+    } else if (key === "ArrowRight") {
+      newColumn = newColumn < 8 ? newColumn + 1 : 8;
+    } else if (key === "ArrowUp") {
+      newRow = newRow > 0 ? newRow - 1 : 0;
+    } else if (key === "ArrowDown") {
+      newRow = newRow < 8 ? newRow + 1 : 8;
+    }
+
+    setFrogPosition({ row: newRow, column: newColumn });
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [frogPosition]);
 
   return (
     <div className="grid grid-cols-9 max-w-[55rem]">
