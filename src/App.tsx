@@ -10,7 +10,6 @@ export default function App() {
     <div className="App">
       <Popup />
       <GameBoard />
-      <PlayerControls />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PlayerControls from "./PlayerControls";
 
 //each cars row, coluumn, colour and direction
 const initialCars = [
@@ -21,7 +22,7 @@ const GameBoard = () => {
   //and initialCars is an array of objects that are the cars, and it
   //allows you to update the value of the "cars" state variable
   const [cars, setCars] = useState(initialCars);
-  const [frogPosition, setFrogPosition] = useState({ row: 1, column: 1 });
+  const [frogPosition, setFrogPosition] = useState({ row: 8, column: 4 });
 
   useEffect(() => {
     const moveCars = () => {
@@ -93,6 +94,18 @@ const GameBoard = () => {
               }`}
               key={`${rowIndex}-${columnIndex}`}
             >
+              {frogPosition.row === rowIndex &&
+                frogPosition.column === columnIndex && (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <span
+                      role="img"
+                      aria-label="Frog"
+                      style={{ fontSize: "70px" }}
+                    >
+                      🐸
+                    </span>
+                  </div>
+                )}
               {car && (
                 <div className="w-full h-full flex items-center justify-center">
                   <i className="fas fa-car text-white"></i>
