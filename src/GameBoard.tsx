@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-//each cars row, coluumn, colour and direction
+//Initial data for cars on the game board
 const initialCars = [
+  //list of cars with their starting properties
   { row: 1, column: 1, color: "bg-red-300", direction: "right" },
   { row: 2, column: 2, color: "bg-orange-500", direction: "left" },
   { row: 3, column: 3, color: "bg-purple-500", direction: "right" },
@@ -11,22 +12,25 @@ const initialCars = [
   { row: 7, column: 7, color: "bg-green-300", direction: "left" },
 ];
 
-//the function is
-//initalize "cars" with initialcars
-//initalize "setCars" function
+//define the gameboard component
 const GameBoard = () => {
   //cars is a state variable that hold the Current value of cars that
   //will change over time based on the users interactions
   //setCars is the updater function allows you to update the value of "cars"
   //and initialCars is an array of objects that are the cars, and it
   //allows you to update the value of the "cars" state variable
+  //State to keep track of car positions and update them
   const [cars, setCars] = useState(initialCars);
+  //State to track frog's position and update it
   const [frogPosition, setFrogPosition] = useState({ row: 8, column: 4 });
 
+  //use useEffect to move cars at regular intervals
   useEffect(() => {
+    //function to update car positions based on direction
     const moveCars = () => {
       setCars((prevCars) =>
         prevCars.map((car) => {
+          //Move each car according to its direction
           const newRow = car.row;
           let newColumn = car.column;
           //if direction of car is left
@@ -46,27 +50,35 @@ const GameBoard = () => {
       );
     };
 
+    //set up interval to move cars
     const intervalId = setInterval(moveCars, 1000);
 
     // Clean up the interval on unmount
     return () => clearInterval(intervalId);
   }, []);
 
+  //handlekeypress to move the frog
   const handleKeyPress = (event: KeyboardEvent) => {
     const { key } = event;
     let newRow = frogPosition.row;
     let newColumn = frogPosition.column;
 
+    //update frog's position based on arrow key press
     if (key === "ArrowLeft") {
       newColumn = newColumn > 0 ? newColumn - 1 : 0;
+      //move frog left if within bounds
     } else if (key === "ArrowRight") {
       newColumn = newColumn < 8 ? newColumn + 1 : 8;
+      //move frog right if within bounds
     } else if (key === "ArrowUp") {
       newRow = newRow > 0 ? newRow - 1 : 0;
+      //move frog up if within bounds
     } else if (key === "ArrowDown") {
       newRow = newRow < 8 ? newRow + 1 : 8;
+      //move frog down if within bounds
     }
 
+    //update frog's position
     setFrogPosition({ row: newRow, column: newColumn });
   };
 
