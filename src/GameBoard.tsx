@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PlayerControls from "./PlayerControls";
 
 //each cars row, coluumn, colour and direction
 const initialCars = [
