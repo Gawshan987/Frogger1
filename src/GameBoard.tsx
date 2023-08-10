@@ -14,15 +14,13 @@ const initialCars = [
 
 //define the gameboard component
 const GameBoard = () => {
-  //cars is a state variable that hold the Current value of cars that
-  //will change over time based on the users interactions
+  //cars is a state variable that hold the current value of cars
   //setCars is the updater function allows you to update the value of "cars"
   //and initialCars is an array of objects that are the cars, and it
-  //allows you to update the value of the "cars" state variable
-  //State to keep track of car positions and update them
   const [cars, setCars] = useState(initialCars);
   //State to track frog's position and update it
   const [frogPosition, setFrogPosition] = useState({ row: 8, column: 4 });
+  const [gameOver, setGameOver] = useState(false);
 
   //use useEffect to move cars at regular intervals
   useEffect(() => {
@@ -53,6 +51,8 @@ const GameBoard = () => {
     //set up interval to move cars
     const intervalId = setInterval(moveCars, 1000);
 
+    // const intervalId2 = setInterval(handleKeyPress, 500);
+
     // Clean up the interval on unmount
     return () => clearInterval(intervalId);
   }, []);
@@ -78,16 +78,37 @@ const GameBoard = () => {
       //move frog down if within bounds
     }
 
+    for (const car of cars) {
+      if (car.row === newRow && car.column === newColumn) {
+        // Collision detected
+        setGameOver(true); // End the game
+        return;
+      }
+    }
+
     //update frog's position
     setFrogPosition({ row: newRow, column: newColumn });
   };
 
+  const [lastKeyPress, setLastKeyPress] = useState<KeyboardEvent | null>(null);
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyPress);
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
+    const keyPressIntervalId = setInterval(() => {
+      if (lastKeyPress) {
+        handleKeyPress(lastKeyPress);
+        setLastKeyPress(null); // Reset the lastKeyPress state
+      }
+    }, 500);
+    const keyDownListener = (event: KeyboardEvent) => {
+      setLastKeyPress(event);
     };
-  }, [frogPosition]);
+    // Add a global event listener to capture key presses
+    window.addEventListener("keydown", keyDownListener);
+    // Clean up the interval and event listener on unmount
+    return () => {
+      clearInterval(keyPressIntervalId);
+      window.removeEventListener("keydown", keyDownListener);
+    };
+  }, [lastKeyPress]);
 
   return (
     <div className="grid grid-cols-9 max-w-[55rem]">
