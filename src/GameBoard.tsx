@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 //Initial data for cars on the game board
 const initialCars = [
   //list of cars with their starting properties
-  { row: 1, column: 1, color: "bg-red-300", direction: "right" },
+  { row: 1, column: 1, color: "bg-red-500", direction: "right" },
   { row: 2, column: 2, color: "bg-orange-500", direction: "left" },
   { row: 3, column: 3, color: "bg-purple-500", direction: "right" },
   { row: 4, column: 4, color: "bg-blue-300", direction: "left" },
   { row: 5, column: 5, color: "bg-black", direction: "right" },
   { row: 6, column: 6, color: "bg-yellow-500", direction: "right" },
-  { row: 7, column: 7, color: "bg-green-300", direction: "left" },
+  { row: 7, column: 7, color: "bg-green-500", direction: "left" },
 ];
 
 //define the gameboard component
@@ -57,15 +57,29 @@ const GameBoard = () => {
   }, []);
   // console.log(cars);
 
+  //for the gameOver and for replaying the game
+  const handleGameOver = () => {
+    const playAgain = window.confirm("Game Over. Do you want to replay?");
+    if (playAgain) {
+      //reseting the game by initializing the state variables
+      setCars(initialCars);
+      setFrogPosition({ row: 8, column: 4 });
+      setGameOver(false);
+    } else {
+      setGameOver(true);
+    }
+  };
+
+  //to check for collision
   const object = () => {
     // console.log(frogPosition);
     if (
+      //only for the first car
       cars[0].column === frogPosition.column &&
       cars[0].row === frogPosition.row
     ) {
-      console.log("gameOver");
-      // Collision detected
-      setGameOver(true); // End the game
+      //console.log("gameOver");
+      handleGameOver();
       return;
     }
   };
