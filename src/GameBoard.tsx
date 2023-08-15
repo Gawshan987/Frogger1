@@ -39,7 +39,6 @@ const GameBoard = () => {
             //else increment car column by 1 and loop within grid boundaries (0 to 8)
             newColumn = (newColumn + 1) % 9;
           }
-
           return {
             ...car,
             column: newColumn,
@@ -56,7 +55,21 @@ const GameBoard = () => {
     // Clean up the interval on unmount
     return () => clearInterval(intervalId);
   }, []);
+  // console.log(cars);
 
+  const object = () => {
+    // console.log(frogPosition);
+    if (
+      cars[0].column === frogPosition.column &&
+      cars[0].row === frogPosition.row
+    ) {
+      console.log("gameOver");
+      // Collision detected
+      setGameOver(true); // End the game
+      return;
+    }
+  };
+  object();
   //handlekeypress to move the frog
   const handleKeyPress = (event: KeyboardEvent) => {
     const { key } = event;
@@ -77,14 +90,7 @@ const GameBoard = () => {
       newRow = newRow < 8 ? newRow + 1 : 8;
       //move frog down if within bounds
     }
-
-    for (const car of cars) {
-      if (car.row === newRow && car.column === newColumn) {
-        // Collision detected
-        setGameOver(true); // End the game
-        return;
-      }
-    }
+    //console.log(initialCars[0]);
 
     //update frog's position
     setFrogPosition({ row: newRow, column: newColumn });
@@ -97,7 +103,7 @@ const GameBoard = () => {
         handleKeyPress(lastKeyPress);
         setLastKeyPress(null); // Reset the lastKeyPress state
       }
-    }, 500);
+    }, 400);
     const keyDownListener = (event: KeyboardEvent) => {
       setLastKeyPress(event);
     };
@@ -111,11 +117,16 @@ const GameBoard = () => {
   }, [lastKeyPress]);
 
   return (
+    //creating a grid container
     <div className="grid grid-cols-9 max-w-[55rem]">
+      {/* //loop through each row */}
       {[...Array(9)].map((_, rowIndex) =>
+        //loop through each column
         [...Array(9)].map((_, columnIndex) => {
           // Determine if a car is at the current position
           const car = cars.find(
+            //if the car's row and column match the car will store the car
+            //the "(car)" is finding what matches
             (car) => car.row === rowIndex && car.column === columnIndex
           );
 
