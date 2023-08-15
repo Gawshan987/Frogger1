@@ -45,6 +45,9 @@ const GameBoard = () => {
           };
         })
       );
+
+      // check for collision
+      object();
     };
 
     //set up interval to move cars
@@ -59,31 +62,30 @@ const GameBoard = () => {
 
   //for the gameOver and for replaying the game
   const handleGameOver = () => {
-    const playAgain = window.confirm("Game Over. Do you want to replay?");
-    if (playAgain) {
-      //reseting the game by initializing the state variables
-      setCars(initialCars);
-      setFrogPosition({ row: 8, column: 4 });
-      setGameOver(false);
-    } else {
-      setGameOver(true);
-    }
+    // const playAgain = window.confirm("Game Over. Do you want to replay?");
+    setGameOver(true);
+
+    //reseting the game by initializing the state variables
+    setCars(initialCars);
+    setFrogPosition({ row: 8, column: 4 });
+    setGameOver(false);
   };
 
   //to check for collision
   const object = () => {
-    // console.log(frogPosition);
+    console.log(frogPosition);
+    console.log(cars[0].row, cars[0].column, cars[0].color);
     if (
       //only for the first car
       cars[0].column === frogPosition.column &&
       cars[0].row === frogPosition.row
     ) {
-      //console.log("gameOver");
+      console.log("gameOver");
       handleGameOver();
       return;
     }
   };
-  object();
+  // object();
   //handlekeypress to move the frog
   const handleKeyPress = (event: KeyboardEvent) => {
     const { key } = event;
@@ -132,47 +134,53 @@ const GameBoard = () => {
 
   return (
     //creating a grid container
-    <div className="grid grid-cols-9 max-w-[55rem]">
-      {/* //loop through each row */}
-      {[...Array(9)].map((_, rowIndex) =>
-        //loop through each column
-        [...Array(9)].map((_, columnIndex) => {
-          // Determine if a car is at the current position
-          const car = cars.find(
-            //if the car's row and column match the car will store the car
-            //the "(car)" is finding what matches
-            (car) => car.row === rowIndex && car.column === columnIndex
-          );
+    <>
+      {gameOver ? (
+        "Game Over"
+      ) : (
+        <div className="grid grid-cols-9 max-w-[55rem]">
+          {/* //loop through each row */}
+          {[...Array(9)].map((_, rowIndex) =>
+            //loop through each column
+            [...Array(9)].map((_, columnIndex) => {
+              // Determine if a car is at the current position
+              const car = cars.find(
+                //if the car's row and column match the car will store the car
+                //the "(car)" is finding what matches
+                (car) => car.row === rowIndex && car.column === columnIndex
+              );
 
-          return (
-            <div
-              className={`w-24 h-24 border border-gray-500 ${
-                car ? car.color : "bg-gray-300"
-              }`}
-              key={`${rowIndex}-${columnIndex}`}
-            >
-              {frogPosition.row === rowIndex &&
-                frogPosition.column === columnIndex && (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <span
-                      role="img"
-                      aria-label="Frog"
-                      style={{ fontSize: "70px" }}
-                    >
-                      🐸
-                    </span>
-                  </div>
-                )}
-              {car && (
-                <div className="w-full h-full flex items-center justify-center">
-                  <i className="fas fa-car text-white"></i>
+              return (
+                <div
+                  className={`w-24 h-24 border border-gray-500 ${
+                    car ? car.color : "bg-gray-300"
+                  }`}
+                  key={`${rowIndex}-${columnIndex}`}
+                >
+                  {frogPosition.row === rowIndex &&
+                    frogPosition.column === columnIndex && (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span
+                          role="img"
+                          aria-label="Frog"
+                          style={{ fontSize: "70px" }}
+                        >
+                          🐸
+                        </span>
+                      </div>
+                    )}
+                  {car && (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <i className="fas fa-car text-white"></i>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          );
-        })
+              );
+            })
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
