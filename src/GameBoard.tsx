@@ -47,73 +47,69 @@ const GameBoard = () => {
       );
 
       // check for collision
-      object();
     };
 
     //set up interval to move cars
     const intervalId = setInterval(moveCars, 1000);
 
-    // const intervalId2 = setInterval(handleKeyPress, 500);
-
     // Clean up the interval on unmount
     return () => clearInterval(intervalId);
   }, []);
-  // console.log(cars);
+
+  //useEffect to check for collision
+  useEffect(() => {
+    const checkForCollision = () => {
+      //check if frog is in the same row and column as any car
+      if (
+        //only for the first car
+        cars[0].column === frogPosition.column &&
+        cars[0].row === frogPosition.row
+      ) {
+        //console.log("gameOver");
+        setGameOver(true);
+        return;
+      }
+    };
+
+    checkForCollision();
+  }, [frogPosition, cars]);
 
   //for the gameOver and for replaying the game
-  const handleGameOver = () => {
-    // const playAgain = window.confirm("Game Over. Do you want to replay?");
-    setGameOver(true);
-
+  const resetGame = () => {
     //reseting the game by initializing the state variables
     setCars(initialCars);
     setFrogPosition({ row: 8, column: 4 });
     setGameOver(false);
   };
 
-  //to check for collision
-  const object = () => {
-    console.log(frogPosition);
-    console.log(cars[0].row, cars[0].column, cars[0].color);
-    if (
-      //only for the first car
-      cars[0].column === frogPosition.column &&
-      cars[0].row === frogPosition.row
-    ) {
-      console.log("gameOver");
-      handleGameOver();
-      return;
-    }
-  };
-  // object();
-  //handlekeypress to move the frog
-  const handleKeyPress = (event: KeyboardEvent) => {
-    const { key } = event;
-    let newRow = frogPosition.row;
-    let newColumn = frogPosition.column;
-
-    //update frog's position based on arrow key press
-    if (key === "ArrowLeft") {
-      newColumn = newColumn > 0 ? newColumn - 1 : 0;
-      //move frog left if within bounds
-    } else if (key === "ArrowRight") {
-      newColumn = newColumn < 8 ? newColumn + 1 : 8;
-      //move frog right if within bounds
-    } else if (key === "ArrowUp") {
-      newRow = newRow > 0 ? newRow - 1 : 0;
-      //move frog up if within bounds
-    } else if (key === "ArrowDown") {
-      newRow = newRow < 8 ? newRow + 1 : 8;
-      //move frog down if within bounds
-    }
-    //console.log(initialCars[0]);
-
-    //update frog's position
-    setFrogPosition({ row: newRow, column: newColumn });
-  };
-
   const [lastKeyPress, setLastKeyPress] = useState<KeyboardEvent | null>(null);
   useEffect(() => {
+    //handlekeypress to move the frog
+    const handleKeyPress = (event: KeyboardEvent) => {
+      const { key } = event;
+      let newRow = frogPosition.row;
+      let newColumn = frogPosition.column;
+
+      //update frog's position based on arrow key press
+      if (key === "ArrowLeft") {
+        newColumn = newColumn > 0 ? newColumn - 1 : 0;
+        //move frog left if within bounds
+      } else if (key === "ArrowRight") {
+        newColumn = newColumn < 8 ? newColumn + 1 : 8;
+        //move frog right if within bounds
+      } else if (key === "ArrowUp") {
+        newRow = newRow > 0 ? newRow - 1 : 0;
+        //move frog up if within bounds
+      } else if (key === "ArrowDown") {
+        newRow = newRow < 8 ? newRow + 1 : 8;
+        //move frog down if within bounds
+      }
+      //console.log(initialCars[0]);
+
+      //update frog's position
+      setFrogPosition({ row: newRow, column: newColumn });
+    };
+
     const keyPressIntervalId = setInterval(() => {
       if (lastKeyPress) {
         handleKeyPress(lastKeyPress);
@@ -130,15 +126,15 @@ const GameBoard = () => {
       clearInterval(keyPressIntervalId);
       window.removeEventListener("keydown", keyDownListener);
     };
-  }, [lastKeyPress]);
+  }, [lastKeyPress, frogPosition]);
 
   return (
-    //creating a grid container
     <>
-      {gameOver ? (
-        "Game Over"
-      ) : (
+      {!gameOver ? (
         <div className="grid grid-cols-9 max-w-[55rem]">
+          <p className="col-span-9">{JSON.stringify(cars[0])}</p>
+          <p className="col-span-9">{JSON.stringify(frogPosition)}</p>
+          <p className="col-span-9">{JSON.stringify(gameOver)}</p>
           {/* //loop through each row */}
           {[...Array(9)].map((_, rowIndex) =>
             //loop through each column
@@ -159,7 +155,7 @@ const GameBoard = () => {
                 >
                   {frogPosition.row === rowIndex &&
                     frogPosition.column === columnIndex && (
-                      <div className="w-full h-full flex items-center justify-center">
+                      <div className="flex items-center justify-center w-full h-full">
                         <span
                           role="img"
                           aria-label="Frog"
@@ -170,14 +166,21 @@ const GameBoard = () => {
                       </div>
                     )}
                   {car && (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <i className="fas fa-car text-white"></i>
+                    <div className="flex items-center justify-center w-full h-full">
+                      <i className="text-white fas fa-car"></i>
                     </div>
                   )}
                 </div>
               );
             })
           )}
+        </div>
+      ) : (
+        <div
+          className="w-24 bg-red-200 cursor-pointer hover:bg-red-300"
+          onClick={() => resetGame()}
+        >
+          Game Over
         </div>
       )}
     </>
