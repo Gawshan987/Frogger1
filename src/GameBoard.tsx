@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CollisionChecker from "./ObjectCollison";
+import PlayerControls from "./PlayerControls";
 
 //Initial data for cars on the game board
 const initialCars = [
@@ -65,51 +66,51 @@ const GameBoard = () => {
     setGameOver(false);
   };
 
-  const [lastKeyPress, setLastKeyPress] = useState<KeyboardEvent | null>(null);
-  useEffect(() => {
-    //handlekeypress to move the frog
-    const handleKeyPress = (event: KeyboardEvent) => {
-      const { key } = event;
-      let newRow = frogPosition.row;
-      let newColumn = frogPosition.column;
+  // const [lastKeyPress, setLastKeyPress] = useState<KeyboardEvent | null>(null);
+  // useEffect(() => {
+  //   //handlekeypress to move the frog
+  //   const handleKeyPress = (event: KeyboardEvent) => {
+  //     const { key } = event;
+  //     let newRow = frogPosition.row;
+  //     let newColumn = frogPosition.column;
 
-      //update frog's position based on arrow key press
-      if (key === "ArrowLeft") {
-        newColumn = newColumn > 0 ? newColumn - 1 : 0;
-        //move frog left if within bounds
-      } else if (key === "ArrowRight") {
-        newColumn = newColumn < 8 ? newColumn + 1 : 8;
-        //move frog right if within bounds
-      } else if (key === "ArrowUp") {
-        newRow = newRow > 0 ? newRow - 1 : 0;
-        //move frog up if within bounds
-      } else if (key === "ArrowDown") {
-        newRow = newRow < 8 ? newRow + 1 : 8;
-        //move frog down if within bounds
-      }
-      //console.log(initialCars[0]);
+  //     //update frog's position based on arrow key press
+  //     if (key === "ArrowLeft") {
+  //       newColumn = newColumn > 0 ? newColumn - 1 : 0;
+  //       //move frog left if within bounds
+  //     } else if (key === "ArrowRight") {
+  //       newColumn = newColumn < 8 ? newColumn + 1 : 8;
+  //       //move frog right if within bounds
+  //     } else if (key === "ArrowUp") {
+  //       newRow = newRow > 0 ? newRow - 1 : 0;
+  //       //move frog up if within bounds
+  //     } else if (key === "ArrowDown") {
+  //       newRow = newRow < 8 ? newRow + 1 : 8;
+  //       //move frog down if within bounds
+  //     }
+  //     //console.log(initialCars[0]);
 
-      //update frog's position
-      setFrogPosition({ row: newRow, column: newColumn });
-    };
+  //     //update frog's position
+  //     setFrogPosition({ row: newRow, column: newColumn });
+  //   };
 
-    const keyPressIntervalId = setInterval(() => {
-      if (lastKeyPress) {
-        handleKeyPress(lastKeyPress);
-        setLastKeyPress(null); // Reset the lastKeyPress state
-      }
-    }, 400);
-    const keyDownListener = (event: KeyboardEvent) => {
-      setLastKeyPress(event);
-    };
-    // Add a global event listener to capture key presses
-    window.addEventListener("keydown", keyDownListener);
-    // Clean up the interval and event listener on unmount
-    return () => {
-      clearInterval(keyPressIntervalId);
-      window.removeEventListener("keydown", keyDownListener);
-    };
-  }, [lastKeyPress, frogPosition]);
+  //   const keyPressIntervalId = setInterval(() => {
+  //     if (lastKeyPress) {
+  //       handleKeyPress(lastKeyPress);
+  //       setLastKeyPress(null); // Reset the lastKeyPress state
+  //     }
+  //   }, 400);
+  //   const keyDownListener = (event: KeyboardEvent) => {
+  //     setLastKeyPress(event);
+  //   };
+  //   // Add a global event listener to capture key presses
+  //   window.addEventListener("keydown", keyDownListener);
+  //   // Clean up the interval and event listener on unmount
+  //   return () => {
+  //     clearInterval(keyPressIntervalId);
+  //     window.removeEventListener("keydown", keyDownListener);
+  //   };
+  // }, [lastKeyPress, frogPosition]);
 
   return (
     <>
@@ -136,14 +137,18 @@ const GameBoard = () => {
                   }`}
                   key={`${rowIndex}-${columnIndex}`}
                 >
-                  <div>
-                    {/* Your component JSX here */}
-                    <CollisionChecker
-                      frogPosition={frogPosition}
-                      cars={cars}
-                      setGameOver={setGameOver}
-                    />
-                  </div>
+                  {/* Your component JSX here */}
+                  <CollisionChecker
+                    frogPosition={frogPosition}
+                    cars={cars}
+                    setGameOver={setGameOver}
+                  />
+
+                  <PlayerControls
+                    frogPosition={frogPosition}
+                    setFrogPosition={setFrogPosition}
+                  />
+
                   {frogPosition.row === rowIndex &&
                     frogPosition.column === columnIndex && (
                       <div className="flex items-center justify-center w-full h-full">
