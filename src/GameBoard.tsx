@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import CollisionChecker from "./ObjectCollison";
 
 //Initial data for cars on the game board
 const initialCars = [
@@ -55,24 +56,6 @@ const GameBoard = () => {
     // Clean up the interval on unmount
     return () => clearInterval(intervalId);
   }, []);
-
-  //useEffect to check for collision
-  useEffect(() => {
-    const checkForCollision = () => {
-      //check if frog is in the same row and column as any car
-      if (
-        //only for the first car
-        cars[0].column === frogPosition.column &&
-        cars[0].row === frogPosition.row
-      ) {
-        //console.log("gameOver");
-        setGameOver(true);
-        return;
-      }
-    };
-
-    checkForCollision();
-  }, [frogPosition, cars]);
 
   //for the gameOver and for replaying the game
   const resetGame = () => {
@@ -153,6 +136,14 @@ const GameBoard = () => {
                   }`}
                   key={`${rowIndex}-${columnIndex}`}
                 >
+                  <div>
+                    {/* Your component JSX here */}
+                    <CollisionChecker
+                      frogPosition={frogPosition}
+                      cars={cars}
+                      setGameOver={setGameOver}
+                    />
+                  </div>
                   {frogPosition.row === rowIndex &&
                     frogPosition.column === columnIndex && (
                       <div className="flex items-center justify-center w-full h-full">
