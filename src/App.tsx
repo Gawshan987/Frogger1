@@ -8,7 +8,6 @@ import PlayerControls from "./PlayerControls";
 export default function App() {
   return (
     <div className="App">
-      <Popup />
       <GameBoard />
     </div>
   );

@@ -5,6 +5,7 @@ import PlayerControls from "./PlayerControls";
 //Initial data for cars on the game board
 const initialCars = [
   //list of cars with their starting properties
+  { row: 0, column: 0, color: "bg-pink-500", direction: "left" },
   { row: 1, column: 1, color: "bg-red-500", direction: "right" },
   { row: 2, column: 2, color: "bg-orange-500", direction: "left" },
   { row: 3, column: 3, color: "bg-purple-500", direction: "right" },
@@ -23,6 +24,11 @@ const GameBoard = () => {
   //State to track frog's position and update it
   const [frogPosition, setFrogPosition] = useState({ row: 8, column: 4 });
   const [gameOver, setGameOver] = useState(false);
+  const [isGameReset, setIsGameReset] = useState(false);
+  //create a state variable for checking if the game has been played once or more
+  //initailze the value as false
+  //if the first game var is false then set to true or else do nothing
+  //then use that state variable to chose which variable to show
 
   //use useEffect to move cars at regular intervals
   useEffect(() => {
@@ -47,8 +53,6 @@ const GameBoard = () => {
           };
         })
       );
-
-      // check for collision
     };
 
     //set up interval to move cars
@@ -66,52 +70,6 @@ const GameBoard = () => {
     setGameOver(false);
   };
 
-  // const [lastKeyPress, setLastKeyPress] = useState<KeyboardEvent | null>(null);
-  // useEffect(() => {
-  //   //handlekeypress to move the frog
-  //   const handleKeyPress = (event: KeyboardEvent) => {
-  //     const { key } = event;
-  //     let newRow = frogPosition.row;
-  //     let newColumn = frogPosition.column;
-
-  //     //update frog's position based on arrow key press
-  //     if (key === "ArrowLeft") {
-  //       newColumn = newColumn > 0 ? newColumn - 1 : 0;
-  //       //move frog left if within bounds
-  //     } else if (key === "ArrowRight") {
-  //       newColumn = newColumn < 8 ? newColumn + 1 : 8;
-  //       //move frog right if within bounds
-  //     } else if (key === "ArrowUp") {
-  //       newRow = newRow > 0 ? newRow - 1 : 0;
-  //       //move frog up if within bounds
-  //     } else if (key === "ArrowDown") {
-  //       newRow = newRow < 8 ? newRow + 1 : 8;
-  //       //move frog down if within bounds
-  //     }
-  //     //console.log(initialCars[0]);
-
-  //     //update frog's position
-  //     setFrogPosition({ row: newRow, column: newColumn });
-  //   };
-
-  //   const keyPressIntervalId = setInterval(() => {
-  //     if (lastKeyPress) {
-  //       handleKeyPress(lastKeyPress);
-  //       setLastKeyPress(null); // Reset the lastKeyPress state
-  //     }
-  //   }, 400);
-  //   const keyDownListener = (event: KeyboardEvent) => {
-  //     setLastKeyPress(event);
-  //   };
-  //   // Add a global event listener to capture key presses
-  //   window.addEventListener("keydown", keyDownListener);
-  //   // Clean up the interval and event listener on unmount
-  //   return () => {
-  //     clearInterval(keyPressIntervalId);
-  //     window.removeEventListener("keydown", keyDownListener);
-  //   };
-  // }, [lastKeyPress, frogPosition]);
-
   return (
     <>
       {!gameOver ? (
@@ -119,6 +77,7 @@ const GameBoard = () => {
           <p className="col-span-9">{JSON.stringify(cars[0])}</p>
           <p className="col-span-9">{JSON.stringify(frogPosition)}</p>
           <p className="col-span-9">{JSON.stringify(gameOver)}</p>
+          <p className="col-span-9">GREEN CAR{JSON.stringify(cars[7])}</p>
           {/* //loop through each row */}
           {[...Array(9)].map((_, rowIndex) =>
             //loop through each column
@@ -172,12 +131,21 @@ const GameBoard = () => {
           )}
         </div>
       ) : (
-        <div
-          className="w-24 bg-red-200 cursor-pointer hover:bg-red-300"
-          onClick={() => resetGame()}
-        >
-          Game Over
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="text-4xl ">Game Over</div>
+          <button
+            className="p-4 border border-slate-400 hover:bg-slate-600"
+            onClick={() => resetGame()}
+          >
+            Replay
+          </button>
         </div>
+        // <div
+        //   className="w-24 bg-red-200 cursor-pointer hover:bg-red-300"
+        //   onClick={() => resetGame()}
+        // >
+        //   Game Over
+        // </div>
       )}
     </>
   );
