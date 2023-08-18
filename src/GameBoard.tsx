@@ -29,6 +29,7 @@ const GameBoard = () => {
   //initailze the value as false
   //if the first game var is false then set to true or else do nothing
   //then use that state variable to chose which variable to show
+  const [hasPlayed, setHasPlayed] = useState(false);
 
   //use useEffect to move cars at regular intervals
   useEffect(() => {
@@ -72,80 +73,94 @@ const GameBoard = () => {
 
   return (
     <>
-      {!gameOver ? (
-        <div className="grid grid-cols-9 max-w-[55rem]">
-          <p className="col-span-9">{JSON.stringify(cars[0])}</p>
-          <p className="col-span-9">{JSON.stringify(frogPosition)}</p>
-          <p className="col-span-9">{JSON.stringify(gameOver)}</p>
-          <p className="col-span-9">GREEN CAR{JSON.stringify(cars[7])}</p>
-          {/* //loop through each row */}
-          {[...Array(9)].map((_, rowIndex) =>
-            //loop through each column
-            [...Array(9)].map((_, columnIndex) => {
-              // Determine if a car is at the current position
-              const car = cars.find(
-                //if the car's row and column match the car will store the car
-                //the "(car)" is finding what matches
-                (car) => car.row === rowIndex && car.column === columnIndex
-              );
-
-              return (
-                <div
-                  className={`w-24 h-24 border border-gray-500 ${
-                    car ? car.color : "bg-gray-300"
-                  }`}
-                  key={`${rowIndex}-${columnIndex}`}
-                >
-                  {/* Your component JSX here */}
-                  <CollisionChecker
-                    frogPosition={frogPosition}
-                    cars={cars}
-                    setGameOver={setGameOver}
-                  />
-
-                  <PlayerControls
-                    frogPosition={frogPosition}
-                    setFrogPosition={setFrogPosition}
-                  />
-
-                  {frogPosition.row === rowIndex &&
-                    frogPosition.column === columnIndex && (
-                      <div className="flex items-center justify-center w-full h-full">
-                        <span
-                          role="img"
-                          aria-label="Frog"
-                          style={{ fontSize: "70px" }}
-                        >
-                          🐸
-                        </span>
-                      </div>
-                    )}
-                  {car && (
-                    <div className="flex items-center justify-center w-full h-full">
-                      <i className="text-white fas fa-car"></i>
-                    </div>
-                  )}
-                </div>
-              );
-            })
-          )}
-        </div>
-      ) : (
+      {!hasPlayed ? (
         <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="text-4xl ">Game Over</div>
+          <div className="text-4xl text-center mt-4">Welcome to Frogger!</div>
           <button
             className="p-4 border border-slate-400 hover:bg-slate-600"
-            onClick={() => resetGame()}
+            onClick={() => setHasPlayed(true)}
           >
-            Replay
+            Start Game
           </button>
         </div>
-        // <div
-        //   className="w-24 bg-red-200 cursor-pointer hover:bg-red-300"
-        //   onClick={() => resetGame()}
-        // >
-        //   Game Over
-        // </div>
+      ) : (
+        <>
+          {!gameOver ? (
+            <div className="grid grid-cols-9 max-w-[55rem]">
+              <p className="col-span-9">{JSON.stringify(cars[0])}</p>
+              <p className="col-span-9">{JSON.stringify(frogPosition)}</p>
+              <p className="col-span-9">{JSON.stringify(gameOver)}</p>
+              <p className="col-span-9">GREEN CAR{JSON.stringify(cars[7])}</p>
+              {/* //loop through each row */}
+              {[...Array(9)].map((_, rowIndex) =>
+                //loop through each column
+                [...Array(9)].map((_, columnIndex) => {
+                  // Determine if a car is at the current position
+                  const car = cars.find(
+                    //if the car's row and column match the car will store the car
+                    //the "(car)" is finding what matches
+                    (car) => car.row === rowIndex && car.column === columnIndex
+                  );
+
+                  return (
+                    <div
+                      className={`w-24 h-24 border border-gray-500 ${
+                        car ? car.color : "bg-gray-300"
+                      }`}
+                      key={`${rowIndex}-${columnIndex}`}
+                    >
+                      {/* Your component JSX here */}
+                      <CollisionChecker
+                        frogPosition={frogPosition}
+                        cars={cars}
+                        setGameOver={setGameOver}
+                      />
+
+                      <PlayerControls
+                        frogPosition={frogPosition}
+                        setFrogPosition={setFrogPosition}
+                      />
+
+                      {frogPosition.row === rowIndex &&
+                        frogPosition.column === columnIndex && (
+                          <div className="flex items-center justify-center w-full h-full">
+                            <span
+                              role="img"
+                              aria-label="Frog"
+                              style={{ fontSize: "70px" }}
+                            >
+                              🐸
+                            </span>
+                          </div>
+                        )}
+                      {car && (
+                        <div className="flex items-center justify-center w-full h-full">
+                          <i className="text-white fas fa-car"></i>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center space-y-4">
+              {gameOver ? (
+                <>
+                  <div className="text-4xl ">Game Over</div>
+                  <button
+                    className="p-4 border border-slate-400 hover:bg-slate-600"
+                    onClick={() => resetGame()}
+                  >
+                    Replay
+                  </button>
+                </>
+              ) : (
+                <p className="text-4xl ">Game in Progress</p>
+              )}
+            </div>
+          )}
+        </>
       )}
     </>
   );
