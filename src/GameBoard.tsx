@@ -75,7 +75,25 @@ const GameBoard = () => {
     <>
       {!hasPlayed ? (
         <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="text-4xl text-center mt-4">Welcome to Frogger!</div>
+          <div className="text-4xl text-center mt-4">
+            Welcome to Frogger!
+            <div className="text-center mt-4 ">
+              <div className="grid grid-cols-2 gap-4 items-center ">
+                <h1 className="text-xl">
+                  The objective of this game is to cross to the other side
+                  without crashing into the other cars moving. To play this game
+                  you can use the arrow keys to move around.
+                  <div className="mt-4 flex justify-center">
+                    <img
+                      src="arrowkeys.png"
+                      alt="Arrow Keys"
+                      className="w-40 h-auto"
+                    />
+                  </div>
+                </h1>
+              </div>
+            </div>
+          </div>
           <button
             className="p-4 border border-slate-400 hover:bg-slate-600"
             onClick={() => setHasPlayed(true)}
