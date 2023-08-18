@@ -5,7 +5,7 @@ import PlayerControls from "./PlayerControls";
 //Initial data for cars on the game board
 const initialCars = [
   //list of cars with their starting properties
-  { row: 0, column: 0, color: "bg-pink-500", direction: "left" },
+  // { row: 0, column: 0, color: "bg-pink-500", direction: "left" },
   { row: 1, column: 1, color: "bg-red-500", direction: "right" },
   { row: 2, column: 2, color: "bg-orange-500", direction: "left" },
   { row: 3, column: 3, color: "bg-purple-500", direction: "right" },
@@ -30,6 +30,8 @@ const GameBoard = () => {
   //if the first game var is false then set to true or else do nothing
   //then use that state variable to chose which variable to show
   const [hasPlayed, setHasPlayed] = useState(false);
+  //to track if the frog has reached the end of the game
+  const [reachedEnd, setReachedEnd] = useState(false);
 
   //use useEffect to move cars at regular intervals
   useEffect(() => {
