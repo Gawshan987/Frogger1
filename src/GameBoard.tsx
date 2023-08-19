@@ -118,6 +118,7 @@ const GameBoard = () => {
               <p className="col-span-9">{JSON.stringify(frogPosition)}</p>
               <p className="col-span-9">{JSON.stringify(gameOver)}</p>
               <p className="col-span-9">GREEN CAR{JSON.stringify(cars[7])}</p> */}
+              <p className="col-span-9 text-center mb-4 text-3xl">Frogger</p>
               {/* //loop through each row */}
               {[...Array(9)].map((_, rowIndex) =>
                 //loop through each column
@@ -199,6 +200,7 @@ const GameBoard = () => {
             <button
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
               onClick={() => {
+                //close the modal and reset the game
                 setShowCongratsModal(false);
                 resetGame();
               }}
