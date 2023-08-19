@@ -196,6 +196,15 @@ const GameBoard = () => {
             <p className="text-2xl font-semibold mb-4">
               Congrats, you've reached the end of the game!
             </p>
+            <button
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              onClick={() => {
+                setShowCongratsModal(false);
+                resetGame();
+              }}
+            >
+              Play Again
+            </button>
           </div>
         </div>
       )}
