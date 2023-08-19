@@ -192,9 +192,16 @@ const GameBoard = () => {
                   >
                     Replay
                   </button>
+                  <button
+                    className="p-4 border border-slate-400 hover:bg-slate-600 mt-4"
+                    onClick={() => setHasPlayed(false)}
+                  >
+                    Home
+                  </button>
                 </>
               ) : (
-                <p className="text-4xl ">Game in Progress</p>
+                //why is this here?i forgot
+                <p className="text-4xl "></p>
               )}
             </div>
           )}
