@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CollisionChecker from "./ObjectCollison";
 import PlayerControls from "./PlayerControls";
 
@@ -32,7 +32,12 @@ const GameBoard = () => {
   const [hasPlayed, setHasPlayed] = useState(false);
   //to track if the frog has reached the end of the game
   const [reachedEnd, setReachedEnd] = useState(false);
+  //for the modal when the game is completed
   const [showCongratsModal, setShowCongratsModal] = useState(false);
+  //for keeping track of the score
+  const [score, setScore] = useState(0);
+  //basically a ref box that remembers things for you
+  const frogPositionRef = useRef({ row: 8, column: 4 });
 
   //use useEffect to move cars at regular intervals
   useEffect(() => {
@@ -59,8 +64,10 @@ const GameBoard = () => {
       );
     };
 
+    const previousFrogPosition = frogPositionRef.current; // Store the previous frog position
+
     //set up interval to move cars
-    const intervalId = setInterval(moveCars, 1000);
+    const intervalId = setInterval(moveCars, 450);
 
     // Check if the frog has reached the end
     if (frogPosition.row === 0) {
@@ -119,6 +126,8 @@ const GameBoard = () => {
               <p className="col-span-9">{JSON.stringify(gameOver)}</p>
               <p className="col-span-9">GREEN CAR{JSON.stringify(cars[7])}</p> */}
               <p className="col-span-9 text-center mb-4 text-3xl">Frogger</p>
+              <p className="col-span-9 text-xl">Score: {score}</p>
+
               {/* //loop through each row */}
               {[...Array(9)].map((_, rowIndex) =>
                 //loop through each column
@@ -147,6 +156,7 @@ const GameBoard = () => {
                       <PlayerControls
                         frogPosition={frogPosition}
                         setFrogPosition={setFrogPosition}
+                        setScore={setScore}
                       />
 
                       {frogPosition.row === rowIndex &&
