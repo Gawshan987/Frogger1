@@ -32,6 +32,7 @@ const GameBoard = () => {
   const [hasPlayed, setHasPlayed] = useState(false);
   //to track if the frog has reached the end of the game
   const [reachedEnd, setReachedEnd] = useState(false);
+  const [showCongratsModal, setShowCongratsModal] = useState(false);
 
   //use useEffect to move cars at regular intervals
   useEffect(() => {
@@ -61,9 +62,15 @@ const GameBoard = () => {
     //set up interval to move cars
     const intervalId = setInterval(moveCars, 1000);
 
+    // Check if the frog has reached the end
+    if (frogPosition.row === 0) {
+      setReachedEnd(true);
+      setShowCongratsModal(true);
+    }
+
     // Clean up the interval on unmount
     return () => clearInterval(intervalId);
-  }, []);
+  }, [frogPosition.row]); //including frogposition.row as a dependency
 
   //for the gameOver and for replaying the game
   const resetGame = () => {
@@ -106,11 +113,11 @@ const GameBoard = () => {
       ) : (
         <>
           {!gameOver ? (
-            <div className="grid grid-cols-9 max-w-[55rem]">
-              <p className="col-span-9">{JSON.stringify(cars[0])}</p>
+            <div className="grid grid-cols-9 max-w-[55rem] p-6">
+              {/* <p className="col-span-9">{JSON.stringify(cars[0])}</p>
               <p className="col-span-9">{JSON.stringify(frogPosition)}</p>
               <p className="col-span-9">{JSON.stringify(gameOver)}</p>
-              <p className="col-span-9">GREEN CAR{JSON.stringify(cars[7])}</p>
+              <p className="col-span-9">GREEN CAR{JSON.stringify(cars[7])}</p> */}
               {/* //loop through each row */}
               {[...Array(9)].map((_, rowIndex) =>
                 //loop through each column
@@ -129,13 +136,13 @@ const GameBoard = () => {
                       }`}
                       key={`${rowIndex}-${columnIndex}`}
                     >
-                      {/* Your component JSX here */}
+                      {/* prop for collisionchecker */}
                       <CollisionChecker
                         frogPosition={frogPosition}
                         cars={cars}
                         setGameOver={setGameOver}
                       />
-
+                      {/* prop for playercontrols */}
                       <PlayerControls
                         frogPosition={frogPosition}
                         setFrogPosition={setFrogPosition}
@@ -181,6 +188,16 @@ const GameBoard = () => {
             </div>
           )}
         </>
+      )}
+      {reachedEnd && showCongratsModal && (
+        //display a modal overlay
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-md">
+            <p className="text-2xl font-semibold mb-4">
+              Congrats, you've reached the end of the game!
+            </p>
+          </div>
+        </div>
       )}
     </>
   );
