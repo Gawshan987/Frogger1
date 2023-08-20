@@ -78,14 +78,6 @@ const CollisionChecker: React.FC<CollisionCheckerProps> = ({
         setGameOver(true);
         return;
       }
-      // if (
-      //   // Only for the eight car
-      //   cars[7].column === frogPosition.column &&
-      //   cars[7].row === frogPosition.row
-      // ) {
-      //   setGameOver(true);
-      //   return;
-      // }
     };
 
     checkForCollision();

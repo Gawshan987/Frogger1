@@ -46,7 +46,6 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
     };
   }, [frogPosition, setFrogPosition]);
 
-  // You can return some JSX here if needed
   return null;
 };
 

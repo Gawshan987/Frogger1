@@ -123,7 +123,7 @@ const GameBoard = () => {
             <div className="grid grid-cols-9 max-w-[55rem] p-6">
               {/* <p className="col-span-9">{JSON.stringify(cars[0])}</p>
               <p className="col-span-9">{JSON.stringify(frogPosition)}</p>
-              <p className="col-span-9">{JSON.stringify(gameOver)}</p>
+              <p className="col-span-9">{JSON.stringify(gameOver)}</p> 
               <p className="col-span-9">GREEN CAR{JSON.stringify(cars[7])}</p> */}
               <p className="col-span-9 text-center mb-4 text-3xl">Frogger</p>
               <p className="col-span-9 text-xl">Score: {score}</p>
@@ -165,7 +165,7 @@ const GameBoard = () => {
                             <span
                               role="img"
                               aria-label="Frog"
-                              style={{ fontSize: "70px" }}
+                              style={{ fontSize: "50px" }}
                             >
                               🐸
                             </span>
@@ -190,7 +190,7 @@ const GameBoard = () => {
                     className="p-4 border border-slate-400 hover:bg-slate-600"
                     onClick={() => resetGame()}
                   >
-                    Replay
+                    Play Again
                   </button>
                   <button
                     className="p-4 border border-slate-400 hover:bg-slate-600 mt-4"
