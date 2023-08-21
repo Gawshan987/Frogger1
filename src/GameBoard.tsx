@@ -86,6 +86,15 @@ const GameBoard = () => {
     setFrogPosition({ row: 8, column: 4 });
     setGameOver(false);
   };
+  // Function to reset the game state
+  const resetGameState = () => {
+    setCars(initialCars);
+    setFrogPosition({ row: 8, column: 4 });
+    setGameOver(false);
+    setShowCongratsModal(false);
+    setReachedEnd(false);
+    setScore(0);
+  };
 
   return (
     <>
@@ -188,13 +197,21 @@ const GameBoard = () => {
                   <div className="text-4xl ">Game Over</div>
                   <button
                     className="p-4 border border-slate-400 hover:bg-slate-600"
-                    onClick={() => resetGame()}
+                    onClick={() => {
+                      resetGame();
+                      resetGameState();
+                    }}
                   >
                     Play Again
                   </button>
                   <button
                     className="p-4 border border-slate-400 hover:bg-slate-600 mt-4"
-                    onClick={() => setHasPlayed(false)}
+                    onClick={() => {
+                      setHasPlayed(false);
+                      resetGameState();
+                      //resets score to 0
+                      setScore(0);
+                    }}
                   >
                     Home
                   </button>
