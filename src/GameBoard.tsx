@@ -38,6 +38,8 @@ const GameBoard = () => {
   const [score, setScore] = useState(0);
   //basically a ref box that remembers things for you
   const frogPositionRef = useRef({ row: 8, column: 4 });
+  //added for personalBest
+  const [personalBest, setPersonalBest] = useState(0);
 
   //use useEffect to move cars at regular intervals
   useEffect(() => {
@@ -75,9 +77,14 @@ const GameBoard = () => {
       setShowCongratsModal(true);
     }
 
+    //updates the personal best score if the current score is higher
+    if (score > personalBest) {
+      setPersonalBest(score);
+    }
+
     // Clean up the interval on unmount
     return () => clearInterval(intervalId);
-  }, [frogPosition.row]); //including frogposition.row as a dependency
+  }, [frogPosition.row, score]); //including frogposition.row as a dependency
 
   //for the gameOver and for replaying the game
   const resetGame = () => {
@@ -136,8 +143,9 @@ const GameBoard = () => {
               <p className="col-span-9">{JSON.stringify(gameOver)}</p> 
               <p className="col-span-9">GREEN CAR{JSON.stringify(cars[7])}</p> */}
               <p className="col-span-9 text-center mb-4 text-3xl">Frogger</p>
-              <p className="col-span-9 text-xl">Score: {score}</p>
-
+              <p className="col-span-9 text-xl">
+                Score: {score} | Personal Best : {personalBest}
+              </p>
               {/* //loop through each row */}
               {[...Array(9)].map((_, rowIndex) =>
                 //loop through each column
