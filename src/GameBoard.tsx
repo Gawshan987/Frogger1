@@ -121,7 +121,7 @@ const GameBoard = () => {
             </div>
           </div>
           <button
-            className="p-4 border border-slate-400 hover:bg-slate-600"
+            className="p-4 border border-green-400 hover:bg-green-400"
             onClick={() => setHasPlayed(true)}
           >
             Start Game
@@ -192,12 +192,12 @@ const GameBoard = () => {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="grid grid-row-1 items-center justify-center space-y-4">
               {gameOver ? (
                 <>
-                  <div className="text-4xl ">Game Over</div>
+                  <div className="text-4xl text-red-600 ">Game Over</div>
                   <button
-                    className="p-4 border border-slate-400 hover:bg-slate-600"
+                    className="p-4 border border-green-400 hover:bg-green-500"
                     onClick={() => {
                       resetGame();
                       resetGameState();
@@ -207,7 +207,7 @@ const GameBoard = () => {
                     Play Again
                   </button>
                   <button
-                    className="p-4 border border-slate-400 hover:bg-slate-600 mt-4"
+                    className="p-4 border border-green-400 hover:bg-green-400 mt-4"
                     onClick={() => {
                       setHasPlayed(false);
                       resetGameState();
