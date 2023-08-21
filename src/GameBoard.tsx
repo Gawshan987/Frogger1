@@ -85,6 +85,7 @@ const GameBoard = () => {
     setCars(initialCars);
     setFrogPosition({ row: 8, column: 4 });
     setGameOver(false);
+    setScore(0);
   };
   // Function to reset the game state
   const resetGameState = () => {
@@ -200,6 +201,7 @@ const GameBoard = () => {
                     onClick={() => {
                       resetGame();
                       resetGameState();
+                      setScore(0);
                     }}
                   >
                     Play Again
