@@ -127,6 +127,7 @@ const GameBoard = () => {
               </div>
             </div>
           </div>
+          {/* Start Button */}
           <button
             className="p-4 border border-green-400 hover:bg-green-400"
             onClick={() => setHasPlayed(true)}
@@ -179,6 +180,7 @@ const GameBoard = () => {
 
                       {frogPosition.row === rowIndex &&
                         frogPosition.column === columnIndex && (
+                          //for the frog
                           <div className="flex items-center justify-center w-full h-full">
                             <span
                               role="img"
@@ -204,6 +206,7 @@ const GameBoard = () => {
               {gameOver ? (
                 <>
                   <div className="text-4xl text-red-600 ">Game Over</div>
+                  {/* for the play again button */}
                   <button
                     className="p-4 border border-green-400 hover:bg-green-500"
                     onClick={() => {
