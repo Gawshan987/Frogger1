@@ -111,7 +111,7 @@ const GameBoard = () => {
           <div className="text-4xl text-center mt-4">
             Welcome to Frogger!
             <div className="text-center mt-4">
-              <div className="grid grid-cols-2 gap-4 items-center">
+              <div className="grid grid-cols-1 gap-4 items-center">
                 <h1 className="text-xl">
                   The objective of this game is to cross to the other side
                   without crashing into the other cars moving. To play this game
