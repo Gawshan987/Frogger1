@@ -106,6 +106,7 @@ const GameBoard = () => {
 
   return (
     <>
+      {/* whether the player has played the game or not */}
       {!hasPlayed ? (
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="text-4xl text-center mt-4">
